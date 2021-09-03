@@ -55,7 +55,7 @@ TOKEN get_token()
             {
                 ungetc(c, stdin);
             }
-            
+
         case Q1_cadena:
             agregar_caracter(c);
             break;
