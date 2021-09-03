@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h> //memset
 #include <stdlib.h> //exit
 #include <ctype.h>  //isspace()
 #include "scanner.h"
@@ -20,16 +21,14 @@ int bufferIndex = 0;
 
 /* Prototipos de funciones privadas */
 // Prototipo para la creación de TOKENs
-typedef tipoDeToken;
+typedef TOKEN tipoDeToken;
 TOKEN crear_token(tipoDeToken);
-//Prototipo para función get_token
-TOKEN get_token(void);
 //Prototipo para función ActionState_Qx
-TOKEN ActionState_Qx(ESTADO, char, tipoDeToken);
+TOKEN ActionState_Qx(ESTADO, char *, tipoDeToken);
+static TOKEN tokenActual;
 
 TOKEN get_token()
 {
-    //ESTADO estadoActual = Q0_inicial;
     char c;
     while ((c = getchar()) != EOF)
     {
@@ -40,7 +39,7 @@ TOKEN get_token()
             if (c == ',')
             {
                 estadoActual = Q2_separador;
-                break; //ver si  saco el break
+                break;
             }
             else if (c == '#')
             {
@@ -56,21 +55,20 @@ TOKEN get_token()
             {
                 ungetc(c, stdin);
             }
-
+            
         case Q1_cadena:
             agregar_caracter(c);
             break;
         case Q2_separador:
-            return ActionState_Qx(estadoActual, buffer, CAD);
-            //return ActionState_Qx(estadoActual, c, SEP);
-            //printf("\nSeparador: %c\n\n", ',');
-            //ungetc(c, stdin); ver si pongo esto
+            if (tokenActual == CAD)
+            {
+                return ActionState_Qx(estadoActual, buffer, CAD);
+            }
+            agregar_caracter(c);
+            return ActionState_Qx(estadoActual, buffer, SEP);
             break;
-        case Q3_finDeTexto: //ver esto
-        default:            //ver esto
+        case Q3_finDeTexto:
             printf("\nFin De Texto: \n\n");
-            c = '#';
-            ungetc(c, stdin);
             break;
         }
     }
@@ -96,30 +94,22 @@ void limpiar_buffer()
 //  devuelve un TOKEN con su data y tipo correspondiente.
 TOKEN crear_token(tipoDeToken tipo)
 {
-    TOKEN nuevoToken;
-    /*if (tipo == CAD)
-    {
-        print("\nCadena: %c\n\n", buffer); 
-        limpiar_buffer();
-    }else if(tipo == SEP){
-        printf("\nSeparador: %c\n\n", ',');
-    }*/
-
-    nuevoToken = tipo;
-    return nuevoToken;
+    tokenActual = tipo;
+    return tokenActual;
 }
 
 // ActionState_Qx simplifica el "reseteo" al estado inicial y retorno del TOKEN.
-TOKEN ActionState_Qx(ESTADO state, char c, tipoDeToken type_Qx)
+TOKEN ActionState_Qx(ESTADO state, char *c, tipoDeToken type_Qx)
 {
     state = Q0_inicial;
     if (type_Qx == CAD)
     {
-        printf("\nCadena: %c\n\n", c); 
-        limpiar_buffer();
-    }else if(type_Qx == SEP){
+        printf("\nCadena: %c\n\n", c);
+    }
+    else if (type_Qx == SEP)
+    {
         printf("\nSeparador: %c\n\n", c);
     }
-    //ungetc(c, stdin);
+    limpiar_buffer();
     return crear_token(type_Qx);
 }

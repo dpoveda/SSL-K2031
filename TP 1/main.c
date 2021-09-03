@@ -1,10 +1,11 @@
 #include <stdio.h>
-#include <stdlib.h>
+#include <stdlib.h> //system()
 #include "scanner.h"
 
 int main(){
-    get_token();
-   /* FILE *entrada;
+    get_token(); 
+
+    /*FILE *entrada;
     entrada = fopen("entrada.txt", "r");
 
     if (entrada == NULL)
@@ -17,6 +18,7 @@ int main(){
     }
 
     fclose(entrada);*/
+
     system("pause");
     return 0;
 }
