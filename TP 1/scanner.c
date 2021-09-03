@@ -68,6 +68,10 @@ TOKEN get_token()
             return ActionState_Qx(estadoActual, buffer, SEP);
             break;
         case Q3_finDeTexto:
+            if (tokenActual == CAD)
+            {
+                return ActionState_Qx(estadoActual, buffer, CAD);
+            }
             printf("\nFin De Texto: \n\n");
             break;
         }
