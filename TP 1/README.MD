@@ -3,7 +3,8 @@
   En este TP vamos a practicar manejo de caracteres y escribir en varios fuentes. El objetivo es leer un texto de entrada y separar en tokens. Vamos a considerar 3 posibles tokens:  
 * FDT (por fin de texto) para cuando se termina el archivo (o sea, se leyó EOF).  
 * SEP (por separador) solo la coma (',') pertenece a esta categoría.  
-* CAD (por cadena) es cualquier sucesión de caracteres que no sea ninguno de los tokens anteriores y no pertenezca al conjunto de espacios (espacio, tabulador, etc).  
+* CAD (por cadena) es cualquier sucesión de caracteres que no sea ninguno de los tokens anter
+* iores y no pertenezca al conjunto de espacios (espacio, tabulador, etc).  
 
 El conjunto de espacios será ignorado.  
 Si bien no lo hemos explicado en detalle cada token se codifica con un entero, use enum para codificar
